@@ -136,57 +136,66 @@
             margin-bottom: 10px;
         }
 
-        /* Countdown Timer Styling */
-        #countdown {
-            position: fixed;
+        /* NEW: Countdown Timer Styles */
+        #countdown-container {
+            position: sticky;
             top: 0;
             left: 0;
             width: 100%;
-            background-color: #ff4c4c; /* Red background for urgency */
+            background-color: #dc3545; /* Red background for urgency */
             color: white;
             text-align: center;
-            padding: 10px 0;
-            font-size: 1.2em;
-            font-weight: bold;
+            padding: 15px 0;
+            z-index: 1000; /* Ensure it stays on top of other content */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
+            box-sizing: border-box;
         }
-        .countdown-label {
-            font-size: 0.8em;
-            display: block;
-            margin-top: 5px;
+        #countdown-timer {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 2.5rem; /* Larger font size */
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
         }
-        .countdown-segment {
-            display: inline-block;
-            margin: 0 10px;
+        .time-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        #countdown-days, #countdown-hours, #countdown-minutes, #countdown-seconds {
-            font-size: 1.5em;
-            display: block;
+        .time-unit span {
+            font-size: 0.8rem;
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
+
     </style>
 </head>
 <body>
-    <div id="countdown">
-        <div class="countdown-segment">
-            <span id="countdown-days"></span>
-            <span class="countdown-label">DAYS</span>
-        </div>
-        <div class="countdown-segment">
-            <span id="countdown-hours"></span>
-            <span class="countdown-label">HOURS</span>
-        </div>
-        <div class="countdown-segment">
-            <span id="countdown-minutes"></span>
-            <span class="countdown-label">MINUTES</span>
-        </div>
-        <div class="countdown-segment">
-            <span id="countdown-seconds"></span>
-            <span class="countdown-label">SECONDS</span>
+    <div id="countdown-container">
+        <div id="countdown-timer">
+            <div class="time-unit">
+                <span id="days">00</span>
+                <span>Days</span>
+            </div>
+            <div class="time-unit">
+                <span id="hours">00</span>
+                <span>Hours</span>
+            </div>
+            <div class="time-unit">
+                <span id="minutes">00</span>
+                <span>Minutes</span>
+            </div>
+            <div class="time-unit">
+                <span id="seconds">00</span>
+                <span>Seconds</span>
+            </div>
         </div>
     </div>
 
-    <div class="container" style="margin-top: 70px;"> <h1>Student Scholarship Application</h1>
+    <div class="container">
+        <h1>Student Scholarship Application</h1>
         <p style="text-align: center; margin-bottom: 30px; color: #666;">Please complete all sections of this form. Incomplete applications may not be considered.</p>
 
         <form id="scholarshipForm" onsubmit="handleSubmitForm(event);">
@@ -280,8 +289,31 @@
                 <input type="text" id="desiredAmount" name="desiredAmount" placeholder="e.g., KES 150,000 or USD 1,500" required>
                 <p class="note">Please specify currency and exact amount you are seeking.</p>
             </div>
+            
             <div class="section">
-                <h3>5. Extracurricular Activities & Experience</h3>
+                <h3>5. Scholarship Funding Destination</h3>
+                <label>How would you like to receive the funds?</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="fundMpesa" name="fundingDestination" value="M-Pesa">
+                        <label for="fundMpesa">M-Pesa</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="fundBank" name="fundingDestination" value="Bank Account">
+                        <label for="fundBank">Bank Account</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="fundOther" name="fundingDestination" value="Other">
+                        <label for="fundOther">Other (Please specify)</label>
+                    </div>
+                </div>
+                <label for="otherDestination">If "Other" or Bank Account, please specify account details/currency:</label>
+                <input type="text" id="otherDestination" name="otherDestination" placeholder="e.g., Bank: ABC Bank, Account: 1234567890" >
+                <p class="note">Provide your full bank details or preferred currency (e.g., USD, EUR) if not M-Pesa. This section will be reviewed for universal application.</p>
+            </div>
+
+            <div class="section">
+                <h3>6. Extracurricular Activities & Experience</h3>
                 <label for="extracurricular">List significant extracurricular activities, volunteer work, or leadership roles:</label>
                 <textarea id="extracurricular" name="extracurricular" rows="4" placeholder="e.g., Club President, Volunteer at [Organization], Sports Team Captain..."></textarea>
                 <p class="note">Include dates and a brief description of your role/achievements.</p>
@@ -292,7 +324,7 @@
             </div>
 
             <div class="section">
-                <h3>6. Supporting Documents</h3>
+                <h3>7. Supporting Documents</h3>
                 <p class="note">Please upload your documents below. For file sizes exceeding 5MB, or if you encounter issues, please email them separately to your_email@example.com with your full name as the subject.</p>
 
                 <label for="transcript">Official Academic Transcripts (.pdf, .jpg, .png):</label>
@@ -319,37 +351,6 @@
             </div>
 
             <div class="section">
-                <h3>7. Financial Disbursement Option</h3>
-                <p class="note">Please provide the details for where the funds should be disbursed if your application is successful.</p>
-
-                <label for="disbursementOption">Select Disbursement Method:</label>
-                <select id="disbursementOption" name="disbursementOption">
-                    <option value="">-- Please Select --</option>
-                    <option value="mpesa">M-Pesa (Kenya)</option>
-                    <option value="bank">Bank Transfer</option>
-                    <option value="other_mobile">Other Mobile Money (e.g., PayPal, PesaLink)</option>
-                </select>
-
-                <div id="mpesaDetails" style="display: none;">
-                    <label for="mpesaNumber">M-Pesa Number:</label>
-                    <input type="tel" id="mpesaNumber" name="mpesaNumber">
-                    <label for="mpesaName">M-Pesa Account Name:</label>
-                    <input type="text" id="mpesaName" name="mpesaName">
-                </div>
-
-                <div id="bankDetails" style="display: none;">
-                    <label for="bankName">Bank Name:</label>
-                    <input type="text" id="bankName" name="bankName">
-                    <label for="accountName">Bank Account Name:</label>
-                    <input type="text" id="accountName" name="accountName">
-                    <label for="accountNumber">Bank Account Number:</label>
-                    <input type="text" id="accountNumber" name="accountNumber">
-                    <label for="swiftCode">SWIFT/BIC Code (for international transfers):</label>
-                    <input type="text" id="swiftCode" name="swiftCode">
-                </div>
-            </div>
-
-            <div class="section">
                 <h3>8. Declaration & Consent</h3>
                 <input type="checkbox" id="declaration" name="declaration" required>
                 <label for="declaration">I certify that all information provided in this application is true and accurate to the best of my knowledge.</label>
@@ -371,62 +372,60 @@
     </div>
 
     <script>
-        // Start Countdown Timer
-        const countdownElement = document.getElementById('countdown');
-        const deadlineKey = 'scholarshipDeadline';
-        let deadline = localStorage.getItem(deadlineKey);
+        // NEW: Countdown Timer JavaScript
+        // Set the countdown duration to 30 days in milliseconds
+        const countdownDuration = 30 * 24 * 60 * 60 * 1000;
 
-        // If no deadline is stored or the stored one is in the past, set a new one
-        if (!deadline || new Date(deadline).getTime() < new Date().getTime()) {
-            const now = new Date();
-            const newDeadline = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
-            deadline = newDeadline.toISOString();
-            localStorage.setItem(deadlineKey, deadline);
+        // Get the initial end time from localStorage or set a new one
+        let endTime = localStorage.getItem('countdownEndTime');
+        if (!endTime || new Date().getTime() > endTime) {
+            endTime = new Date().getTime() + countdownDuration;
+            localStorage.setItem('countdownEndTime', endTime);
         }
 
-        let deadlineDate = new Date(deadline);
-
-        function updateCountdown() {
+        const countdownFunction = setInterval(() => {
             const now = new Date().getTime();
-            let distance = deadlineDate - now;
+            const distance = endTime - now;
 
-            // If the deadline is reached, reset it to 30 days
-            if (distance <= 0) {
-                const newDeadline = new Date(now + 30 * 24 * 60 * 60 * 1000);
-                deadline = newDeadline.toISOString();
-                localStorage.setItem(deadlineKey, deadline);
-                deadlineDate = new Date(deadline); // Update the deadlineDate variable
-                distance = deadlineDate - now; // Recalculate distance
+            if (distance < 0) {
+                // If the countdown is finished, reset the timer
+                endTime = new Date().getTime() + countdownDuration;
+                localStorage.setItem('countdownEndTime', endTime);
+                // Optionally, clear the interval for a moment and restart
+                // This ensures the timer doesn't show negative numbers briefly
+                // before the refresh
+                clearInterval(countdownFunction);
+                location.reload(); // Reload the page to reset the timer smoothly
+                return;
             }
 
+            // Calculate time units
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById('countdown-days').textContent = days;
-            document.getElementById('countdown-hours').textContent = hours;
-            document.getElementById('countdown-minutes').textContent = minutes;
-            document.getElementById('countdown-seconds').textContent = seconds;
-        }
+            // Update the HTML elements, adding a leading zero if needed
+            document.getElementById("days").textContent = String(days).padStart(2, '0');
+            document.getElementById("hours").textContent = String(hours).padStart(2, '0');
+            document.getElementById("minutes").textContent = String(minutes).padStart(2, '0');
+            document.getElementById("seconds").textContent = String(seconds).padStart(2, '0');
 
-        const countdownInterval = setInterval(updateCountdown, 1000);
-        updateCountdown(); // Run immediately to avoid a 1-second delay
+        }, 1000);
 
-        // Handle Financial Disbursement Section
-        const disbursementSelect = document.getElementById('disbursementOption');
-        const mpesaDetails = document.getElementById('mpesaDetails');
-        const bankDetails = document.getElementById('bankDetails');
+        function handleSubmitForm(event) {
+            event.preventDefault(); // Prevent the form from actually submitting
 
-        disbursementSelect.addEventListener('change', (event) => {
-            mpesaDetails.style.display = 'none';
-            bankDetails.style.display = 'none';
+            const form = document.getElementById('scholarshipForm');
+            const postSubmissionActionsDiv = document.getElementById('postSubmissionActions');
+            const fullNameInput = document.getElementById('fullName');
+            const applicantName = fullNameInput.value.trim();
 
-            if (event.target.value === 'mpesa') {
-                mpesaDetails.style.display = 'block';
-            } else if (event.target.value === 'bank') {
-                bankDetails.style.display = 'block';
+            // --- Form Validation (Client-Side) ---
+            if (!form.checkValidity()) {
+                return; // Stop the function if validation fails
             }
-        });
 
-  
+            // --- Collect checkbox values for "applicationType" ---
+            const applicationTypes = Array.from(document.querySelectorAll('input[name="applicationType"]:checked'))
+                                         .map(
