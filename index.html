@@ -1,557 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Scholarship Application Form</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        background-color: #f4f4f4;
-        color: #333;
-    }
-    .container {
-        max-width: 800px;
-        margin: 0 auto;
-        background-color: #fff;
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    h1, h2 {
-        color: #0056b3;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    .section {
-        margin-bottom: 25px;
-        padding: 15px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-    }
-    .section h3 {
-        margin-top: 0;
-        color: #555;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 10px;
-        margin-bottom: 15px;
-    }
-    label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-        color: #444;
-    }
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    input[type="date"],
-    input[type="number"],
-    textarea,
-    select {
-        width: calc(100% - 22px);
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-    textarea { resize: vertical; min-height: 80px; }
-    input[type="radio"], input[type="checkbox"] { margin-right: 5px; }
-    .radio-group label, .checkbox-group label { display: inline-block; margin-right: 15px; font-weight: normal; }
-    .file-upload { margin-top: 10px; }
-    button[type="submit"] {
-        background-color: #007bff;
-        color: white;
-        padding: 12px 25px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 1.1em;
-        display: block;
-        width: 100%;
-        max-width: 200px;
-        margin: 25px auto 0;
-        transition: background-color 0.3s ease;
-    }
-    button[type="submit"]:hover { background-color: #0056b3; }
-    .note { font-size: 0.9em; color: #666; margin-top: -10px; margin-bottom: 15px; }
-
-    #postSubmissionActions {
-        display: none;
-        padding: 30px;
-        text-align: center;
-        background-color: #e9f7ef;
-        border: 1px solid #d0e9da;
-        border-radius: 8px;
-        margin-top: 30px;
-    }
-    #postSubmissionActions h2 { color: #28a745; margin-bottom: 20px; }
-    #postSubmissionActions p { color: #333; margin-bottom: 15px; }
-    #doneButton {
-        background-color: #28a745;
-        color: white;
-        padding: 12px 25px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 1.1em;
-        display: inline-block;
-        margin-top: 20px;
-        text-decoration: none;
-        transition: background-color 0.3s ease;
-    }
-    #doneButton:hover { background-color: #218838; }
-    .checkbox-item { margin-bottom: 10px; }
-
-    /* Sticky red bigger countdown */
-    #deadlineCountdown {
-        position: sticky;
-        top: 0;
-        z-index: 999;
-        background-color: #ffc107;
-        color: red;
-        font-size: 1.5em;
-        padding: 12px;
-        text-align: center;
-        font-weight: bold;
-        border-radius: 5px;
-        margin-bottom: 20px;
-    }
-</style>
-</head>
-<body>
-<div class="container">
-    <div id="deadlineCountdown">
-        Scholarship Application Deadline: <span id="countdownTimer">Loading...</span>
-    </div>
-
-    <h1>Student Scholarship Application</h1>
-    <p style="text-align: center; margin-bottom: 30px; color: #666;">Please complete all sections of this form. Incomplete applications may not be considered.</p>
-
-    <form id="scholarshipForm" onsubmit="handleSubmitForm(event);">
-
-        <!-- Section 1: Personal Info -->
-        <div class="section">
-            <h3>1. Personal Information</h3>
-            <label for="fullName">Full Name:</label>
-            <input type="text" id="fullName" name="fullName" required>
-            <label for="dob">Date of Birth:</label>
-            <input type="date" id="dob" name="dob" required>
-            <label for="gender">Gender:</label>
-            <div class="radio-group">
-                <input type="radio" id="male" name="gender" value="Male" required>
-                <label for="male">Male</label>
-                <input type="radio" id="female" name="gender" value="Female">
-                <label for="female">Female</label>
-                <input type="radio" id="other_gender" name="gender" value="Other">
-                <label for="other_gender">Other</label>
-            </div>
-            <label for="nationality">Nationality:</label>
-            <input type="text" id="nationality" name="nationality" required>
-            <label for="countryRes">Country of Current Residence:</label>
-            <input type="text" id="countryRes" name="countryRes" required>
-            <label for="email">Email Address:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="phone">Phone Number (with Country Code):</label>
-            <input type="tel" id="phone" name="phone" placeholder="+254 7XX XXX XXX or +1-XXX-XXX-XXXX" required>
-        </div>
-
-        <!-- Section 2: Academic Background -->
-        <div class="section">
-            <h3>2. Academic Background</h3>
-            <label for="lastInstitution">Last/Current Educational Institution:</label>
-            <input type="text" id="lastInstitution" name="lastInstitution" required>
-            <label for="degreeAwarded">Degree/Qualification Awarded/Pursuing:</label>
-            <input type="text" id="degreeAwarded" name="degreeAwarded" required>
-            <label for="major">Major/Field of Study:</label>
-            <input type="text" id="major" name="major" required>
-            <label for="gpa">GPA / Academic Average (e.g., 3.8/4.0 or 85%):</label>
-            <input type="text" id="gpa" name="gpa" required>
-            <p class="note">Please specify the grading scale.</p>
-            <label for="englishProficiency">English Language Proficiency Test (e.g., IELTS/TOEFL) Score (if applicable):</label>
-            <input type="text" id="englishProficiency" name="englishProficiency" placeholder="e.g., IELTS 7.0, TOEFL 100">
-            <p class="note">If applicable, upload certificate in the "Supporting Documents" section.</p>
-        </div>
-
-        <!-- Section 3: Scholarship Interest & Motivation -->
-        <div class="section">
-            <h3>3. Scholarship Interest & Motivation</h3>
-            <label for="programInterest">Program/Course you intend to study:</label>
-            <input type="text" id="programInterest" name="programInterest" required>
-            <label for="universityInterest">Desired University/Institution (if applicable):</label>
-            <input type="text" id="universityInterest" name="universityInterest">
-            <label for="reasonForScholarship">Why are you applying for this scholarship? (Max 250 words)</label>
-            <textarea id="reasonForScholarship" name="reasonForScholarship" rows="5" maxlength="250" required></textarea>
-            <p class="note">Focus on your motivations, goals, and financial need if applicable.</p>
-            <label for="futureGoals">How do you envision this scholarship contributing to your future academic and career goals? (Max 250 words)</label>
-            <textarea id="futureGoals" name="futureGoals" rows="5" maxlength="250" required></textarea>
-        </div>
-
-        <!-- Section 4: Application Type & Desired Amount -->
-        <div class="section">
-            <h3>4. Application Type & Desired Amount</h3>
-            <label>Please select the type(s) of assistance you are applying for:</label>
-            <div class="checkbox-group">
-                <div class="checkbox-item">
-                    <input type="checkbox" id="applyScholarship" name="applicationType" value="Scholarship">
-                    <label for="applyScholarship">Scholarship (Covers Tuition Fees)</label>
-                </div>
-                <div class="checkbox-item">
-                    <input type="checkbox" id="applyBursary" name="applicationType" value="Bursary">
-                    <label for="applyBursary">Bursary (Covers Part of Fees/Living Costs)</label>
-                </div>
-                <div class="checkbox-item">
-                    <input type="checkbox" id="applyPocketMoney" name="applicationType" value="Pocket Money">
-                    <label for="applyPocketMoney">Pocket Money (Stipend for Personal Expenses)</label>
-                </div>
-                <p class="note">You can select one or more options.</p>
-            </div>
-            <label for="desiredAmount">Desired Amount (in KES or USD, if applicable):</label>
-            <input type="text" id="desiredAmount" name="desiredAmount" placeholder="e.g., KES 150,000 or USD 1,500" required>
-            <p class="note">Please specify currency and exact amount you are seeking.</p>
-        </div>
-
-        <!-- Section 5: Extracurricular Activities & Experience -->
-        <div class="section">
-            <h3>5. Extracurricular Activities & Experience</h3>
-            <label for="extracurricular">List significant extracurricular activities, volunteer work, or leadership roles:</label>
-            <textarea id="extracurricular" name="extracurricular" rows="4" placeholder="e.g., Club President, Volunteer at [Organization], Sports Team Captain..."></textarea>
-            <p class="note">Include dates and a brief description of your role/achievements.</p>
-            <label for="workExperience">Relevant Work Experience (if any):</label>
-            <textarea id="workExperience" name="workExperience" rows="4" placeholder="e.g., Intern at [Company], Part-time [Job Title]..."></textarea>
-            <p class="note">Include job title, company, dates, and key responsibilities/achievements.</p>
-        </div>
-
-        <!-- Section 6: Supporting Documents -->
-        <div class="section">
-            <h3>6. Supporting Documents</h3>
-            <p class="note">Please upload your documents below. For file sizes exceeding 5MB, or if you encounter issues, please email them separately.</p>
-            <label for="transcript">Official Academic Transcripts (.pdf, .jpg, .png):</label>
-            <input type="file" id="transcript" name="transcript" accept=".pdf,.jpg,.png" class="file-upload">
-            <label for="personalStatement">Personal Statement/Essay (.pdf, .jpg, .png - if separate from motivation question):</label>
-            <input type="file" id="personalStatement" name="personalStatement" accept=".pdf,.jpg,.png" class="file-upload">
-            <label for="recommendationLetter1">Letter of Recommendation 1 (.pdf, .jpg, .png):</label>
-            <input type="file" id="recommendationLetter1" name="recommendationLetter1" accept=".pdf,.jpg,.png" class="file-upload">
-            <label for="recommendationLetter2">Letter of Recommendation 2 (Optional - .pdf, .jpg, .png):</label>
-            <input type="file" id="recommendationLetter2" name="recommendationLetter2" accept=".pdf,.jpg,.png" class="file-upload">
-            <label for="passportCopy">Copy of Passport/National ID (.pdf, .jpg, .png):</label>
-            <input type="file" id="passportCopy" name="passportCopy" accept=".pdf,.jpg,.png" class="file-upload">
-            <label for="englishCert">English Proficiency Certificate (if applicable - .pdf, .jpg,.png):</label>
-            <input type="file" id="englishCert" name="englishCert" accept=".pdf,.jpg,.png" class="file-upload">
-            <label for="cvResume">Curriculum Vitae (CV) / Resume (.pdf, .jpg, .png):</label>
-            <input type="file" id="cvResume" name="cvResume" accept=".pdf,.jpg,.png" class="file-upload">
-        </div>
-
-        <!-- Section 7: Declaration & Consent -->
-        <div class="section">
-            <h3>7. Declaration & Consent</h3>
-            <input type="checkbox" id="declaration" name="declaration" required>
-            <label for="declaration">I certify that all information provided in this application is true and accurate to the best of my knowledge.</label>
-            <p class="note" style="margin-top: 15px;">By submitting this form, you agree to the scholarship terms and conditions (<a href="#" target="_blank">link to them here</a>).</p>
-        </div>
-
-        <button type="submit">Submit Application</button>
-    </form>
-
-    <div id="postSubmissionActions" class="container">
-        <h2>Application Received!</h2>
-        <p>Thank you for your application!</p>
-        <p>We will review your application and get back to you soon.</p>
-        <p style="font-weight: bold; color: #dc3545;">Important: A refundable registration fee is required to process your application.</p>
-        <p>You will receive separate communication with detailed payment instructions.</p>
-        <a href="https://wa.me/254763019802?text=Inquiry%20about%20application%20fee" id="doneButton" target="_blank">Done</a>
-    </div>
-</div>
-
-<script>
-    // 40-day looping countdown
-    const countdownElement = document.getElementById('countdownTimer');
-    const totalDays = 40;
-    let deadline = new Date(new Date().getTime() + totalDays*24*60*60*1000);
-<!DOCTYPE html>
-<html lang="en">
-<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Scholarship Application Form</title>
+  <title>Scholarship Application Form</title>
   <style>
-    /* Existing CSS */
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: #f4f4f4;
-      color: #333;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
     }
     .container {
       max-width: 800px;
-      margin: 0 auto;
-      background-color: #fff;
-      padding: 30px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-    h1, h2 {
-      color: #0056b3;
+    h1 {
       text-align: center;
-      margin-bottom: 20px;
+      color: #0056b3;
     }
     .section {
-      margin-bottom: 25px;
+      margin-bottom: 20px;
       padding: 15px;
       border: 1px solid #ddd;
       border-radius: 5px;
+      background: #fafafa;
     }
-    .section h3 {
-      margin-top: 0;
-      color: #555;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 10px;
-      margin-bottom: 15px;
+    .section h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #333;
     }
     label {
       display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-      color: #444;
+      margin: 8px 0 5px;
     }
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    input[type="date"],
-    input[type="number"],
-    textarea,
-    select {
-      width: calc(100% - 22px);
-      padding: 10px;
-      margin-bottom: 15px;
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
       border: 1px solid #ccc;
       border-radius: 4px;
-      box-sizing: border-box;
     }
     textarea {
       resize: vertical;
-      min-height: 80px;
     }
-    input[type="radio"],
-    input[type="checkbox"] {
-      margin-right: 5px;
-    }
-    .radio-group label, .checkbox-group label {
-      display: inline-block;
-      margin-right: 15px;
-      font-weight: normal;
-    }
-    .file-upload {
-      margin-top: 10px;
-    }
-    button[type="submit"] {
-      background-color: #007bff;
-      color: white;
-      padding: 12px 25px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1.1em;
+    .submit-btn {
       display: block;
       width: 100%;
-      max-width: 200px;
-      margin: 25px auto 0;
-      transition: background-color 0.3s ease;
-    }
-    button[type="submit"]:hover {
-      background-color: #0056b3;
-    }
-    .note {
-      font-size: 0.9em;
-      color: #666;
-      margin-top: -10px;
-      margin-bottom: 15px;
-    }
-    #postSubmissionActions {
-      display: none;
-      padding: 30px;
-      text-align: center;
-      background-color: #e9f7ef;
-      border: 1px solid #d0e9da;
-      border-radius: 8px;
-      margin-top: 30px;
-    }
-    #postSubmissionActions h2 {
-      color: #28a745;
-      margin-bottom: 20px;
-    }
-    #postSubmissionActions p {
-      color: #333;
-      margin-bottom: 15px;
-    }
-    #doneButton {
-      background-color: #28a745;
+      padding: 10px;
+      background: #0056b3;
       color: white;
-      padding: 12px 25px;
       border: none;
       border-radius: 5px;
+      font-size: 16px;
       cursor: pointer;
-      font-size: 1.1em;
+    }
+    .submit-btn:hover {
+      background: #004494;
+    }
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      background: #e6ffe6;
+      border: 1px solid #b3ffb3;
+      border-radius: 8px;
+    }
+    .success-message h2 {
+      color: green;
+    }
+    .whatsapp-btn {
       display: inline-block;
-      margin-top: 20px;
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: #25d366;
+      color: white;
       text-decoration: none;
-      transition: background-color 0.3s ease;
+      border-radius: 5px;
+      font-size: 16px;
     }
-    #doneButton:hover {
-      background-color: #218838;
+    .whatsapp-btn:hover {
+      background: #1eb346;
     }
-    .checkbox-item {
-      margin-bottom: 10px;
-    }
-
-    /* Sticky countdown */
+    /* BIG TOP BANNER COUNTDOWN */
     #countdown {
       position: fixed;
-      top: 10px;
-      right: 10px;
-      background: #dc3545;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #ff0000;
       color: white;
-      font-size: 1.5em;
+      padding: 20px 0;
+      text-align: center;
+      font-size: 36px;
       font-weight: bold;
-      padding: 15px 25px;
-      border-radius: 10px;
-      z-index: 9999;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+    body {
+      padding-top: 90px; /* prevent overlap */
     }
   </style>
 </head>
 <body>
-  <!-- Sticky Countdown -->
-  <div id="countdown">30d : 00h : 00m : 00s Remaining</div>
+  <!-- Sticky BIG Countdown -->
+  <div id="countdown">Loading countdown...</div>
 
   <div class="container">
     <h1>Student Scholarship Application</h1>
-    <p style="text-align: center; margin-bottom: 30px; color: #666;">
-      Please complete all sections of this form. Incomplete applications may not be considered.
-    </p>
+    <p style="text-align:center;color:#555;">Complete all sections carefully.</p>
 
-    <form id="scholarshipForm" onsubmit="handleSubmitForm(event);">
-      <!-- All your existing sections here... -->
-
-      <!-- New Payment Preference Section -->
+    <form id="applicationForm">
+      <!-- Original Sections 1–6 -->
       <div class="section">
-        <h3>8. Payment Preference</h3>
-        <label for="paymentMethod">Preferred Mode of Receiving Scholarship/Bursary:</label>
-        <select id="paymentMethod" name="paymentMethod" required>
-          <option value="">-- Select an Option --</option>
-          <option value="Bank Transfer">Bank Transfer</option>
-          <option value="Mpesa">Mpesa</option>
-          <option value="Paypal">Paypal</option>
-          <option value="Other">Other (Specify below)</option>
+        <h2>1. Personal Information</h2>
+        <label>Full Name</label>
+        <input type="text" required>
+        <label>Date of Birth</label>
+        <input type="date" required>
+        <label>Gender</label>
+        <select required>
+          <option value="">-- Select Gender --</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
         </select>
-        <input type="text" id="paymentDetails" name="paymentDetails" placeholder="e.g., Bank Account Number / Mpesa Number / Other">
+        <label>Nationality</label>
+        <input type="text" required>
+        <label>Country of Residence</label>
+        <input type="text" required>
+        <label>Email Address</label>
+        <input type="email" required>
+        <label>Phone Number</label>
+        <input type="tel" required>
       </div>
 
-      <!-- Declaration Section -->
       <div class="section">
-        <h3>7. Declaration & Consent</h3>
-        <input type="checkbox" id="declaration" name="declaration" required>
-        <label for="declaration">I certify that all information provided in this application is true and accurate to the best of my knowledge.</label>
-        <p class="note" style="margin-top: 15px;">By submitting this form, you agree to the scholarship terms and conditions (<a href="#" target="_blank">link to them here</a>).</p>
+        <h2>2. Academic Background</h2>
+        <label>Current/Most Recent School/University</label>
+        <input type="text" required>
+        <label>Level of Study Completed</label>
+        <select required>
+          <option value="">-- Select Level --</option>
+          <option>High School</option>
+          <option>Bachelor's Degree</option>
+          <option>Master's Degree</option>
+          <option>Doctorate</option>
+          <option>Other</option>
+        </select>
+        <label>Field of Study</label>
+        <input type="text" required>
+        <label>GPA/Grade (if applicable)</label>
+        <input type="text">
+        <label>English Proficiency (IELTS/TOEFL, if applicable)</label>
+        <input type="text">
       </div>
 
-      <button type="submit">Submit Application</button>
+      <div class="section">
+        <h2>3. Scholarship Interest & Motivation</h2>
+        <label>Preferred Program of Study</label>
+        <input type="text" required>
+        <label>Preferred Country/University</label>
+        <input type="text" required>
+        <label>Why are you applying for this scholarship?</label>
+        <textarea rows="4" required></textarea>
+        <label>What are your future academic/career goals?</label>
+        <textarea rows="4" required></textarea>
+      </div>
+
+      <div class="section">
+        <h2>4. Application Type & Desired Amount</h2>
+        <label><input type="checkbox" name="appType" value="Scholarship"> Scholarship</label>
+        <label><input type="checkbox" name="appType" value="Bursary"> Bursary</label>
+        <label><input type="checkbox" name="appType" value="Pocket Money"> Pocket Money</label>
+        <label>Desired Amount (USD or Local Currency)</label>
+        <input type="text" id="desiredAmount">
+      </div>
+
+      <div class="section">
+        <h2>5. Extracurricular & Work Experience</h2>
+        <label>List extracurricular activities, leadership roles, community service</label>
+        <textarea rows="3"></textarea>
+        <label>List work experience (if any)</label>
+        <textarea rows="3"></textarea>
+      </div>
+
+      <div class="section">
+        <h2>6. Supporting Documents</h2>
+        <label>Upload Academic Transcript</label>
+        <input type="file" accept=".pdf,.doc,.docx,.jpg,.png">
+        <label>Upload Personal Statement</label>
+        <input type="file" accept=".pdf,.doc,.docx">
+        <label>Upload Recommendation Letters</label>
+        <input type="file" multiple accept=".pdf,.doc,.docx">
+        <label>Upload Passport Copy/ID</label>
+        <input type="file" accept=".pdf,.jpg,.png">
+        <label>Upload CV/Resume</label>
+        <input type="file" accept=".pdf,.doc,.docx">
+        <label>Other Documents (optional)</label>
+        <input type="file" multiple>
+      </div>
+
+      <!-- NEW SECTION: Payment Preference -->
+      <div class="section">
+        <h2>7. Payment Preference</h2>
+        <label>Preferred Mode of Payment</label>
+        <select required>
+          <option value="">-- Select Option --</option>
+          <option>Bank Transfer</option>
+          <option>Mpesa</option>
+          <option>PayPal</option>
+          <option>Other</option>
+        </select>
+        <label>Payment Details (e.g. Bank Account / Mpesa Number)</label>
+        <input type="text" required>
+      </div>
+
+      <div class="section">
+        <h2>8. Declaration & Consent</h2>
+        <label><input type="checkbox" required> I confirm that the information provided is true.</label>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit Application</button>
     </form>
 
-    <div id="postSubmissionActions" class="container">
+    <div class="success-message" id="successMessage">
       <h2>Application Received!</h2>
-      <p>Thank you for your application!</p>
-      <p>We will review your application and get back to you soon.</p>
-      <p style="font-weight: bold; color: #dc3545;">Important: A refundable registration fee is required to process your application.</p>
-      <p>You will receive separate communication with detailed payment instructions.</p>
-      <a href="https://wa.me/254763019802?text=Inquiry%20about%20application%20fee" id="doneButton" target="_blank">Done</a>
+      <p>Thank you for submitting your scholarship application.</p>
+      <p style="color:red;"><strong>Important:</strong> A refundable registration fee is required to complete processing.</p>
+      <a id="whatsappLink" class="whatsapp-btn" target="_blank">Done</a>
     </div>
   </div>
 
   <script>
-    // Countdown logic with days, hours, minutes, seconds
+    // === COUNTDOWN WITH LOCALSTORAGE ===
+    function getCycleStart() {
+      let start = localStorage.getItem("cycleStart");
+      if (!start) {
+        start = new Date().getTime();
+        localStorage.setItem("cycleStart", start);
+      }
+      return parseInt(start);
+    }
+
     function updateCountdown() {
-      const now = new Date();
-      const startDate = new Date("2025-01-01"); // fixed anchor date
-      const msPerCycle = 30 * 24 * 60 * 60 * 1000; // 30 days in ms
-      const elapsed = now - startDate;
+      const startDate = getCycleStart();
+      const now = new Date().getTime();
+      const cycleLength = 30 * 24 * 60 * 60 * 1000; // 30 days
+      let elapsed = now - startDate;
 
-      // Remaining time in current 30-day cycle
-      const remaining = msPerCycle - (elapsed % msPerCycle);
+      if (elapsed >= cycleLength) {
+        // Reset cycle
+        localStorage.setItem("cycleStart", now);
+        elapsed = 0;
+      }
 
-      // Break down into days/hours/minutes/seconds
+      const remaining = cycleLength - elapsed;
       const days = Math.floor(remaining / (24 * 60 * 60 * 1000));
       const hours = Math.floor((remaining % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
       const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
       const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
 
-      const countdownEl = document.getElementById("countdown");
-      countdownEl.textContent =
+      document.getElementById("countdown").textContent =
         `${days}d : ${hours}h : ${minutes}m : ${seconds}s Remaining`;
     }
 
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Form submit logic
-    function handleSubmitForm(event) {
-      event.preventDefault();
+    // === FORM HANDLING ===
+    document.getElementById("applicationForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      document.getElementById("applicationForm").style.display = "none";
+      document.getElementById("successMessage").style.display = "block";
 
-      const form = document.getElementById('scholarshipForm');
-      const postSubmissionActionsDiv = document.getElementById('postSubmissionActions');
-      const fullNameInput = document.getElementById('fullName');
-      const applicantName = fullNameInput.value.trim();
+      let name = document.querySelector("input[type='text']").value;
+      let appTypes = Array.from(document.querySelectorAll("input[name='appType']:checked"))
+                      .map(cb => cb.value).join(", ");
+      let desiredAmount = document.getElementById("desiredAmount").value;
 
-      if (!form.checkValidity()) {
-        return;
-      }
+      let message = `Hello, I'm ${name}. I'm inquiring about the application fee for my scholarship application. My desired amount is ${desiredAmount}. Application Type: ${appTypes}`;
+      let whatsappLink = "https://wa.me/254763019802?text=" + encodeURIComponent(message);
+      document.getElementById("whatsappLink").href = whatsappLink;
 
-      const applicationTypes = Array.from(document.querySelectorAll('input[name="applicationType"]:checked'))
-                                   .map(cb => cb.value);
-      const desiredAmount = document.getElementById('desiredAmount').value.trim();
-
-      const formData = new FormData(form);
-      const data = {};
-      for (let [key, value] of formData.entries()) {
-        if (key === 'applicationType') {
-          data[key] = applicationTypes.length > 0 ? applicationTypes.join(', ') : '';
-        } else if (value instanceof File) {
-          data[key] = value.name;
-        } else {
-          data[key] = value;
-        }
-      }
-      console.log("Form Data Collected (for simulation):", data);
-
-      let whatsappMessage = `Hello, I'm ${applicantName}. I'm inquiring about the application fee for my scholarship application.`;
-      if (applicationTypes.length > 0) {
-        whatsappMessage += ` I applied for a ${applicationTypes.join(', ')} type of assistance.`;
-      }
-      if (desiredAmount) {
-        whatsappMessage += ` My desired amount is ${desiredAmount}.`;
-      }
-      whatsappMessage += ` Can you provide details?`;
-
-      const encodedWhatsappMessage = encodeURIComponent(whatsappMessage);
-      const doneButton = document.getElementById('doneButton');
-      doneButton.href = `https://wa.me/254763019802?text=${encodedWhatsappMessage}`;
-
-      alert(`
-Dear ${applicantName || 'Applicant'},
-
-Your scholarship application has been successfully received!
-
-Important: A refundable registration fee is required to process your application. You will receive separate communication with detailed payment instructions.
-
-Thank you!
-      `);
-
-      form.style.display = 'none';
-      postSubmissionActionsDiv.style.display = 'block';
-      postSubmissionActionsDiv.scrollIntoView({ behavior: 'smooth' });
-    }
+      alert("Your application has been submitted successfully!");
+    });
   </script>
 </body>
-</html>
+    </html>
