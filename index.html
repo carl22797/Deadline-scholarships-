@@ -136,7 +136,7 @@
             margin-bottom: 10px;
         }
 
-        /* NEW: Countdown Timer Styles */
+        /* Countdown Timer Styles */
         #countdown-container {
             position: sticky;
             top: 0;
@@ -169,26 +169,25 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
     </style>
 </head>
 <body>
     <div id="countdown-container">
         <div id="countdown-timer">
             <div class="time-unit">
-                <span id="days">00</span>
+                <span id="days"></span>
                 <span>Days</span>
             </div>
             <div class="time-unit">
-                <span id="hours">00</span>
+                <span id="hours"></span>
                 <span>Hours</span>
             </div>
             <div class="time-unit">
-                <span id="minutes">00</span>
+                <span id="minutes"></span>
                 <span>Minutes</span>
             </div>
             <div class="time-unit">
-                <span id="seconds">00</span>
+                <span id="seconds"></span>
                 <span>Seconds</span>
             </div>
         </div>
@@ -373,46 +372,44 @@
 
     <script>
         // NEW: Countdown Timer JavaScript
-        // Set the countdown duration to 30 days in milliseconds
         const countdownDuration = 30 * 24 * 60 * 60 * 1000;
-
-        // Get the initial end time from localStorage or set a new one
         let endTime = localStorage.getItem('countdownEndTime');
-        if (!endTime || new Date().getTime() > endTime) {
-            endTime = new Date().getTime() + countdownDuration;
-            localStorage.setItem('countdownEndTime', endTime);
-        }
 
-        const countdownFunction = setInterval(() => {
+        function updateCountdown() {
             const now = new Date().getTime();
             const distance = endTime - now;
 
+            // Check if the timer has expired
             if (distance < 0) {
-                // If the countdown is finished, reset the timer
+                // If it has, set a new end time for 30 days from now
                 endTime = new Date().getTime() + countdownDuration;
                 localStorage.setItem('countdownEndTime', endTime);
-                // Optionally, clear the interval for a moment and restart
-                // This ensures the timer doesn't show negative numbers briefly
-                // before the refresh
-                clearInterval(countdownFunction);
-                location.reload(); // Reload the page to reset the timer smoothly
-                return;
             }
 
+            // Recalculate the distance with the potentially new end time
+            const remainingDistance = endTime - new Date().getTime();
+
             // Calculate time units
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            const days = Math.floor(remainingDistance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((remainingDistance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((remainingDistance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remainingDistance % (1000 * 60)) / 1000);
 
             // Update the HTML elements, adding a leading zero if needed
             document.getElementById("days").textContent = String(days).padStart(2, '0');
             document.getElementById("hours").textContent = String(hours).padStart(2, '0');
             document.getElementById("minutes").textContent = String(minutes).padStart(2, '0');
             document.getElementById("seconds").textContent = String(seconds).padStart(2, '0');
+        }
 
-        }, 1000);
+        if (!endTime || new Date().getTime() > endTime) {
+            endTime = new Date().getTime() + countdownDuration;
+            localStorage.setItem('countdownEndTime', endTime);
+        }
 
+        // Update the countdown every second
+        setInterval(updateCountdown, 1000);
+        
         function handleSubmitForm(event) {
             event.preventDefault(); // Prevent the form from actually submitting
 
@@ -428,4 +425,7 @@
 
             // --- Collect checkbox values for "applicationType" ---
             const applicationTypes = Array.from(document.querySelectorAll('input[name="applicationType"]:checked'))
-                                         .map(
+                                         .map(cb => cb.value);
+
+            // --- Collect checkbox values for "fundingDestination" ---
+            const fundingDestinations = Array.from(document.querySelectorAll('input[name="fundingDestinat
