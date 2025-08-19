@@ -270,44 +270,288 @@
     const countdownElement = document.getElementById('countdownTimer');
     const totalDays = 40;
     let deadline = new Date(new Date().getTime() + totalDays*24*60*60*1000);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Scholarship Application Form</title>
+  <style>
+    /* Existing CSS */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1, h2 {
+      color: #0056b3;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .section {
+      margin-bottom: 25px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .section h3 {
+      margin-top: 0;
+      color: #555;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #444;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="number"],
+    textarea,
+    select {
+      width: calc(100% - 22px);
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    input[type="radio"],
+    input[type="checkbox"] {
+      margin-right: 5px;
+    }
+    .radio-group label, .checkbox-group label {
+      display: inline-block;
+      margin-right: 15px;
+      font-weight: normal;
+    }
+    .file-upload {
+      margin-top: 10px;
+    }
+    button[type="submit"] {
+      background-color: #007bff;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1.1em;
+      display: block;
+      width: 100%;
+      max-width: 200px;
+      margin: 25px auto 0;
+      transition: background-color 0.3s ease;
+    }
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+    .note {
+      font-size: 0.9em;
+      color: #666;
+      margin-top: -10px;
+      margin-bottom: 15px;
+    }
+    #postSubmissionActions {
+      display: none;
+      padding: 30px;
+      text-align: center;
+      background-color: #e9f7ef;
+      border: 1px solid #d0e9da;
+      border-radius: 8px;
+      margin-top: 30px;
+    }
+    #postSubmissionActions h2 {
+      color: #28a745;
+      margin-bottom: 20px;
+    }
+    #postSubmissionActions p {
+      color: #333;
+      margin-bottom: 15px;
+    }
+    #doneButton {
+      background-color: #28a745;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1.1em;
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+    #doneButton:hover {
+      background-color: #218838;
+    }
+    .checkbox-item {
+      margin-bottom: 10px;
+    }
 
+    /* Sticky countdown */
+    #countdown {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #dc3545;
+      color: white;
+      font-size: 1.5em;
+      font-weight: bold;
+      padding: 15px 25px;
+      border-radius: 10px;
+      z-index: 9999;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <!-- Sticky Countdown -->
+  <div id="countdown">30d : 00h : 00m : 00s Remaining</div>
+
+  <div class="container">
+    <h1>Student Scholarship Application</h1>
+    <p style="text-align: center; margin-bottom: 30px; color: #666;">
+      Please complete all sections of this form. Incomplete applications may not be considered.
+    </p>
+
+    <form id="scholarshipForm" onsubmit="handleSubmitForm(event);">
+      <!-- All your existing sections here... -->
+
+      <!-- New Payment Preference Section -->
+      <div class="section">
+        <h3>8. Payment Preference</h3>
+        <label for="paymentMethod">Preferred Mode of Receiving Scholarship/Bursary:</label>
+        <select id="paymentMethod" name="paymentMethod" required>
+          <option value="">-- Select an Option --</option>
+          <option value="Bank Transfer">Bank Transfer</option>
+          <option value="Mpesa">Mpesa</option>
+          <option value="Paypal">Paypal</option>
+          <option value="Other">Other (Specify below)</option>
+        </select>
+        <input type="text" id="paymentDetails" name="paymentDetails" placeholder="e.g., Bank Account Number / Mpesa Number / Other">
+      </div>
+
+      <!-- Declaration Section -->
+      <div class="section">
+        <h3>7. Declaration & Consent</h3>
+        <input type="checkbox" id="declaration" name="declaration" required>
+        <label for="declaration">I certify that all information provided in this application is true and accurate to the best of my knowledge.</label>
+        <p class="note" style="margin-top: 15px;">By submitting this form, you agree to the scholarship terms and conditions (<a href="#" target="_blank">link to them here</a>).</p>
+      </div>
+
+      <button type="submit">Submit Application</button>
+    </form>
+
+    <div id="postSubmissionActions" class="container">
+      <h2>Application Received!</h2>
+      <p>Thank you for your application!</p>
+      <p>We will review your application and get back to you soon.</p>
+      <p style="font-weight: bold; color: #dc3545;">Important: A refundable registration fee is required to process your application.</p>
+      <p>You will receive separate communication with detailed payment instructions.</p>
+      <a href="https://wa.me/254763019802?text=Inquiry%20about%20application%20fee" id="doneButton" target="_blank">Done</a>
+    </div>
+  </div>
+
+  <script>
+    // Countdown logic with days, hours, minutes, seconds
     function updateCountdown() {
-        const now = new Date();
-        let distance = deadline - now;
+      const now = new Date();
+      const startDate = new Date("2025-01-01"); // fixed anchor date
+      const msPerCycle = 30 * 24 * 60 * 60 * 1000; // 30 days in ms
+      const elapsed = now - startDate;
 
-        if (distance <= 0) {
-            // Reset countdown to another 40 days
-            deadline = new Date(new Date().getTime() + totalDays*24*60*60*1000);
-            distance = deadline - now;
-        }
+      // Remaining time in current 30-day cycle
+      const remaining = msPerCycle - (elapsed % msPerCycle);
 
-        const days = Math.floor(distance / (1000*60*60*24));
-        const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
-        const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
-        const seconds = Math.floor((distance % (1000*60)) / 1000);
+      // Break down into days/hours/minutes/seconds
+      const days = Math.floor(remaining / (24 * 60 * 60 * 1000));
+      const hours = Math.floor((remaining % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+      const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
+      const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
 
-        countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      const countdownEl = document.getElementById("countdown");
+      countdownEl.textContent =
+        `${days}d : ${hours}h : ${minutes}m : ${seconds}s Remaining`;
     }
 
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Form submission logic
+    // Form submit logic
     function handleSubmitForm(event) {
-        event.preventDefault();
-        const form = document.getElementById('scholarshipForm');
-        const postSubmissionActionsDiv = document.getElementById('postSubmissionActions');
-        const fullNameInput = document.getElementById('fullName');
-        const applicantName = fullNameInput.value.trim();
+      event.preventDefault();
 
-        if (!form.checkValidity()) return;
+      const form = document.getElementById('scholarshipForm');
+      const postSubmissionActionsDiv = document.getElementById('postSubmissionActions');
+      const fullNameInput = document.getElementById('fullName');
+      const applicantName = fullNameInput.value.trim();
 
-        alert(`Dear ${applicantName || 'Applicant'},\n\nYour scholarship application has been successfully received!\n\nImportant: A refundable registration fee is required to process your application. You will receive separate communication with detailed payment instructions.\n\nThank you!`);
+      if (!form.checkValidity()) {
+        return;
+      }
 
-        form.style.display = 'none';
-        postSubmissionActionsDiv.style.display = 'block';
-        postSubmissionActionsDiv.scrollIntoView({ behavior: 'smooth' });
+      const applicationTypes = Array.from(document.querySelectorAll('input[name="applicationType"]:checked'))
+                                   .map(cb => cb.value);
+      const desiredAmount = document.getElementById('desiredAmount').value.trim();
+
+      const formData = new FormData(form);
+      const data = {};
+      for (let [key, value] of formData.entries()) {
+        if (key === 'applicationType') {
+          data[key] = applicationTypes.length > 0 ? applicationTypes.join(', ') : '';
+        } else if (value instanceof File) {
+          data[key] = value.name;
+        } else {
+          data[key] = value;
+        }
+      }
+      console.log("Form Data Collected (for simulation):", data);
+
+      let whatsappMessage = `Hello, I'm ${applicantName}. I'm inquiring about the application fee for my scholarship application.`;
+      if (applicationTypes.length > 0) {
+        whatsappMessage += ` I applied for a ${applicationTypes.join(', ')} type of assistance.`;
+      }
+      if (desiredAmount) {
+        whatsappMessage += ` My desired amount is ${desiredAmount}.`;
+      }
+      whatsappMessage += ` Can you provide details?`;
+
+      const encodedWhatsappMessage = encodeURIComponent(whatsappMessage);
+      const doneButton = document.getElementById('doneButton');
+      doneButton.href = `https://wa.me/254763019802?text=${encodedWhatsappMessage}`;
+
+      alert(`
+Dear ${applicantName || 'Applicant'},
+
+Your scholarship application has been successfully received!
+
+Important: A refundable registration fee is required to process your application. You will receive separate communication with detailed payment instructions.
+
+Thank you!
+      `);
+
+      form.style.display = 'none';
+      postSubmissionActionsDiv.style.display = 'block';
+      postSubmissionActionsDiv.scrollIntoView({ behavior: 'smooth' });
     }
-</script>
+  </script>
 </body>
-                </html>
+</html>
