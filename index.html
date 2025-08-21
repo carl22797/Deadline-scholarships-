@@ -415,16 +415,40 @@ Thank you!
     </script>
 
     <!-- NEW: Persistent 30-day deadline countdown (fixed, follows on scroll, survives reloads) -->
-    <script>
-        (function() {
-            const bar = document.getElementById('deadlineCountdownBar');
-            const KEY = 'scholarshipCountdownDeadline';
-            const DURATION = 30 * 24 * 60 * 60 * 1000; // 30 days in ms
+    <<script>
+  const countdownEl = document.getElementById("countdown");
+  let endTime = localStorage.getItem("deadlineEnd");
 
-            let deadline = parseInt(localStorage.getItem(KEY), 10);
-            if (!deadline || isNaN(deadline)) {
-                deadline = Date.now() + DURATION;
-                localStorage.setItem(KEY, String(deadline));
-            }
+  if (!endTime) {
+    // If no deadline saved, set one for 30 days from now
+    endTime = new Date().getTime() + (30 * 24 * 60 * 60 * 1000);
+    localStorage.setItem("deadlineEnd", endTime);
+  } else {
+    endTime = parseInt(endTime);
+  }
 
-            function pad(n){ return
+  function updateCountdown() {
+    const now = new Date().getTime();
+    let distance = endTime - now;
+
+    if (distance <= 0) {
+      // Reset countdown for another 30 days
+      endTime = new Date().getTime() + (30 * 24 * 60 * 60 * 1000);
+      localStorage.setItem("deadlineEnd", endTime);
+      distance = endTime - now;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    countdownEl.innerHTML = `⏳ Deadline: <strong>${days}d ${hours}h ${minutes}m ${seconds}s</strong>`;
+  }
+
+  // Run immediately and keep updating every second
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
